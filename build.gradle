@@ -14,6 +14,14 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.31'
+
+    implementation 'org.springframework:org.springframework.asm:3.0.7.RELEASE'
+    implementation 'org.springframework:org.springframework.beans:3.0.7.RELEASE'
+    implementation 'org.springframework:org.springframework.context:3.0.7.RELEASE'
+    implementation 'org.springframework:org.springframework.core:3.0.7.RELEASE'
+    implementation 'org.springframework:org.springframework.expression:3.0.7.RELEASE'
+    implementation 'net.sourceforge.cglib:com.springsource.net.sf.cglib:2.2.0'
+    implementation 'org.apache.commons:com.springsource.org.apache.commons.logging:1.1.1'
 }
 
 test {
