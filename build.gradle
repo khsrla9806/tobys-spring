@@ -23,6 +23,8 @@ dependencies {
 
     implementation 'net.sourceforge.cglib:com.springsource.net.sf.cglib:2.2.0'
     implementation 'org.apache.commons:com.springsource.org.apache.commons.logging:1.1.1'
+
+    implementation 'cglib:cglib:2.2.2'
 }
 
 test {
