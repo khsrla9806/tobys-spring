@@ -12,7 +12,7 @@ public class UserDaoTest {
         UserDao userDao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
-        user.setId("hoon2");
+        user.setId("hoon5");
         user.setName("훈훈");
         user.setPassword("123456789");
 
