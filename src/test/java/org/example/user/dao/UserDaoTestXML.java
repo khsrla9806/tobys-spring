@@ -8,12 +8,12 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import java.sql.SQLException;
 
 public class UserDaoTestXML {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main(String[] args) throws SQLException {
         ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
         UserDao userDao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
-        user.setId("hoon6");
+        user.setId("hoon8");
         user.setName("훈훈");
         user.setPassword("123456789");
 
