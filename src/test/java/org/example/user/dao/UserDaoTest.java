@@ -22,6 +22,8 @@ import static org.junit.Assert.assertThat;
 public class UserDaoTest {
     @Autowired
     private ApplicationContext context;
+
+    @Autowired
     private UserDao dao;
     private User user1;
     private User user2;
@@ -29,8 +31,6 @@ public class UserDaoTest {
 
     @Before
     public void setUp() {
-        dao = this.context.getBean("userDao", UserDao.class);
-
         user1 = new User("user1", "유저1", "1234");
         user2 = new User("user2", "유저2", "1234");
         user3 = new User("user3", "유저3", "1234");
