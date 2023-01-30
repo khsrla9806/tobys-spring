@@ -2,9 +2,11 @@ package org.example.user.dao;
 
 import org.example.user.domain.User;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
 
@@ -12,14 +14,23 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class UserDaoTest {
+    private UserDao dao;
+    private User user1;
+    private User user2;
+    private User user3;
+
+    @Before
+    public void setUp() {
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        dao = context.getBean("userDao", UserDao.class);
+
+        user1 = new User("user1", "유저1", "1234");
+        user2 = new User("user2", "유저2", "1234");
+        user3 = new User("user3", "유저3", "1234");
+    }
+
     @Test
     public void addAndGet() throws SQLException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao dao = context.getBean("userDao", UserDao.class);
-
-        User user1 = new User("user1", "유저1", "1234");
-        User user2 = new User("user2", "유저2", "1234");
-
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
@@ -38,13 +49,6 @@ public class UserDaoTest {
 
     @Test
     public void count() throws SQLException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-
-        UserDao dao = context.getBean("userDao", UserDao.class);
-        User user1 = new User("user1", "유저1", "1234");
-        User user2 = new User("user2", "유저2", "1234");
-        User user3 = new User("user3", "유저3", "1234");
-
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
@@ -56,5 +60,13 @@ public class UserDaoTest {
 
         dao.add(user3);
         assertThat(dao.getCount(), is(3));
+    }
+
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void getUserFailure() throws SQLException {
+        dao.deleteAll();
+        assertThat(dao.getCount(), is(0));
+
+        dao.get("unknown_id");
     }
 }
