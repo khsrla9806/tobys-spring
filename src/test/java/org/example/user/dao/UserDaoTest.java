@@ -1,29 +1,31 @@
 package org.example.user.dao;
 
 import org.example.user.domain.User;
+
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 public class UserDaoTest {
-    public static void main(String[] args) throws SQLException {
+    @Test
+    public void addAndGet() throws SQLException {
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao userDao = context.getBean("userDao", UserDao.class);
+        UserDao dao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
-        user.setId("hoon7");
-        user.setName("훈훈");
+        user.setId("kimhunsope");
+        user.setName("김씨");
         user.setPassword("123456789");
+        dao.add(user);
 
-        userDao.add(user);
+        User user2 = dao.get(user.getId());
 
-        System.out.println(user.getId() + " 등록 성공!");
-
-        User user2 = userDao.get(user.getId());
-        System.out.println(user2.getName());
-        System.out.println(user2.getPassword());
-
-        System.out.println(user2.getId() + " 조회 성공!");
+        assertThat(user2.getName(), is(user.getName()));
+        assertThat(user2.getPassword(), is(user.getPassword()));
     }
 }
