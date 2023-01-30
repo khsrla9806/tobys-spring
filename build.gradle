@@ -16,6 +16,7 @@ dependencies {
 //    testImplementation 'org.junit:com.springsource.org.junit:4.7.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'org.springframework:spring-test:3.0.7.RELEASE'
 
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.31'
 
