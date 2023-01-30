@@ -20,10 +20,7 @@ public class UserDaoTest {
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
-        User user = new User();
-        user.setId("kimhunsope");
-        user.setName("김씨");
-        user.setPassword("123456789");
+        User user = new User("kimhunsope", "김씨", "123456789");
 
         dao.add(user);
         assertThat(dao.getCount(), is(1));
