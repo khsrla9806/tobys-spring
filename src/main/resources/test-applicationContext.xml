@@ -10,6 +10,6 @@
         <property name="password" value="" />
     </bean>
     <bean id="userDao" class="org.example.user.dao.UserDao">
-        <property name="dataSource" ref="dataSource" />
+        <property name="jdbcTemplate" ref="dataSource" />
     </bean>
 </beans>

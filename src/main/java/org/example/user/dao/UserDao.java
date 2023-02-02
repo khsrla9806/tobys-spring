@@ -11,13 +11,11 @@ import java.sql.*;
 import java.util.List;
 
 public class UserDao {
-    private DataSource dataSource;
 
     private JdbcTemplate jdbcTemplate;
 
-    public void setDataSource(DataSource dataSource) {
+    public void setJdbcTemplate(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-        this.dataSource = dataSource;
     }
 
     public void add(User user) {
