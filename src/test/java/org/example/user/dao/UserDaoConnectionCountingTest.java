@@ -9,18 +9,18 @@ import java.sql.SQLException;
 public class UserDaoConnectionCountingTest {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         ApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
-        UserDao userDao = context.getBean("userDao", UserDao.class);
+        UserDaoJdbc userDaoJdbc = context.getBean("userDao", UserDaoJdbc.class);
 
         User user = new User();
         user.setId("hoon4");
         user.setName("훈훈");
         user.setPassword("123456789");
 
-        userDao.add(user);
+        userDaoJdbc.add(user);
 
         System.out.println(user.getId() + " 등록 성공!");
 
-        User user2 = userDao.get(user.getId());
+        User user2 = userDaoJdbc.get(user.getId());
         System.out.println(user2.getName());
         System.out.println(user2.getPassword());
 

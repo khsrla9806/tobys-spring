@@ -9,10 +9,10 @@ import javax.sql.DataSource;
 @Configuration
 public class DaoFactory {
     @Bean
-    public UserDao userDao() {
-        UserDao userDao = new UserDao();
-        userDao.setJdbcTemplate(dataSource());
-        return userDao;
+    public UserDaoJdbc userDao() {
+        UserDaoJdbc userDaoJdbc = new UserDaoJdbc();
+        userDaoJdbc.setJdbcTemplate(dataSource());
+        return userDaoJdbc;
     }
 
     @Bean
