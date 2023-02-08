@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -99,6 +101,15 @@ public class UserDaoJdbcTest {
         assertThat(users3.size(), is(3));
         checkSameUser(user3, users3.get(2));
     }
+
+    @Test(expected = DuplicateKeyException.class)
+    public void duplicateKey() {
+        dao.deleteAll();
+
+        dao.add(user1);
+        dao.add(user1);
+    }
+
 
     private void checkSameUser(User user1, User user2) {
         assertThat(user1.getId(), is(user2.getId()));
