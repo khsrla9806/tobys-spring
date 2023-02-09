@@ -13,16 +13,16 @@ dependencies {
 //    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
 //    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
-//    testImplementation 'org.junit:com.springsource.org.junit:4.7.0'
+    testImplementation 'org.junit:com.springsource.org.junit:4.7.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:hamcrest:2.2'
-    testImplementation 'org.springframework:spring-test:3.0.7.RELEASE'
+    testImplementation 'org.springframework:spring-test:4.1.1.RELEASE'
 
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.31'
 
-    implementation 'org.springframework:spring-asm:3.0.7.RELEASE'
+    implementation 'org.springframework:spring-asm:4.1.1.RELEASE'
     implementation 'org.springframework:spring-beans:3.0.7.RELEASE'
-    implementation 'org.springframework:spring-context:3.0.7.RELEASE'
+    implementation 'org.springframework:spring-context:4.1.1.RELEASE'
     implementation 'org.springframework:spring-core:3.0.7.RELEASE'
     implementation 'org.springframework:spring-expression:3.0.7.RELEASE'
 
