@@ -114,6 +114,7 @@ public class UserDaoJdbcTest {
         dao.deleteAll();
 
         dao.add(user1);
+        dao.add(user2); // 변경되지 않는 유저
 
         user1.setName("섭섭킴");
         user1.setPassword("1234");
@@ -124,6 +125,9 @@ public class UserDaoJdbcTest {
 
         User user1update = dao.get(user1.getId());
         checkSameUser(user1update, user1);
+
+        User user2same = dao.get(user2.getId());
+        checkSameUser(user2same, user2);
     }
 
 
