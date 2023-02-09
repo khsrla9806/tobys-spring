@@ -1,5 +1,6 @@
 package org.example.user.dao;
 
+import org.example.user.domain.Level;
 import org.example.user.domain.User;
 
 import org.junit.Before;
@@ -33,9 +34,9 @@ public class UserDaoJdbcTest {
 
     @Before
     public void setUp() {
-        user1 = new User("user1", "유저1", "1234");
-        user2 = new User("user2", "유저2", "1234");
-        user3 = new User("user3", "유저3", "1234");
+        user1 = new User("user1", "유저1", "1234", Level.BASIC, 1, 0);
+        user2 = new User("user2", "유저2", "1234", Level.SILVER, 55, 10);
+        user3 = new User("user3", "유저3", "1234", Level.GOLD, 100, 40);
     }
 
     @Test
@@ -48,12 +49,10 @@ public class UserDaoJdbcTest {
         assertThat(dao.getCount(), is(2));
 
         User userget1 = dao.get(user1.getId());
-        assertThat(userget1.getName(), is(user1.getName()));
-        assertThat(userget1.getPassword(), is(user1.getPassword()));
+        checkSameUser(userget1, user1);
 
         User userget2 = dao.get(user2.getId());
-        assertThat(userget2.getName(), is(user2.getName()));
-        assertThat(userget2.getPassword(), is(user2.getPassword()));
+        checkSameUser(userget2, user2);
     }
 
     @Test
@@ -115,5 +114,8 @@ public class UserDaoJdbcTest {
         assertThat(user1.getId(), is(user2.getId()));
         assertThat(user1.getName(), is(user2.getName()));
         assertThat(user1.getPassword(), is(user2.getPassword()));
+        assertThat(user1.getLevel(), is(user2.getLevel()));
+        assertThat(user1.getLogin(), is(user2.getLogin()));
+        assertThat(user1.getRecommend(), is(user2.getRecommend()));
     }
 }
