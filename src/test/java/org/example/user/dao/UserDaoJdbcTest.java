@@ -109,6 +109,23 @@ public class UserDaoJdbcTest {
         dao.add(user1);
     }
 
+    @Test
+    public void update() {
+        dao.deleteAll();
+
+        dao.add(user1);
+
+        user1.setName("섭섭킴");
+        user1.setPassword("1234");
+        user1.setLevel(Level.GOLD);
+        user1.setLogin(1000);
+        user1.setRecommend(999);
+        dao.update(user1);
+
+        User user1update = dao.get(user1.getId());
+        checkSameUser(user1update, user1);
+    }
+
 
     private void checkSameUser(User user1, User user2) {
         assertThat(user1.getId(), is(user2.getId()));
