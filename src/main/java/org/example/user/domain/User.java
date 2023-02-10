@@ -23,6 +23,16 @@ public class User {
         // 파라미터가 없는 디폴트 생성자도 함께 정의해주는 것을 잊지 말자.
     }
 
+    public void upgradeLevel() {
+        Level nextLevel = this.level.nextLevel();
+
+        if (nextLevel == null) {
+            throw new IllegalArgumentException(this.level + "은 더이상 업그레이드가 불가능합니다.");
+        } else {
+            this.level = nextLevel;
+        }
+    }
+
     public Level getLevel() {
         return level;
     }
