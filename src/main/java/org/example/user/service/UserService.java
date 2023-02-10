@@ -20,22 +20,19 @@ public class UserService {
     public static final int MIN_LOGIN_COUNT_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_COUNT_FOR_GOLD = 30;
     private UserDao userDao;
-    private DataSource dataSource;
+    private PlatformTransactionManager transactionManager;
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
     }
 
     public void upgradeLevels() {
-        // JDBC 트랜잭션 추상 오브젝트 생성
-        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
-
         // 트랜잭션 시작
-        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        TransactionStatus status = this.transactionManager.getTransaction(new DefaultTransactionDefinition());
 
         try {
             List<User> users = userDao.getAll();
@@ -45,9 +42,9 @@ public class UserService {
                     upgradeLevel(user);
                 }
             }
-            transactionManager.commit(status); // 트랜잭션 커밋
+            this.transactionManager.commit(status); // 트랜잭션 커밋
         } catch (RuntimeException e) {
-            transactionManager.rollback(status); // 트랜잭션 롤백
+            this.transactionManager.rollback(status); // 트랜잭션 롤백
             throw e;
         }
     }

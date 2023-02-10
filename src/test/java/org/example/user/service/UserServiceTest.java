@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
@@ -32,7 +33,7 @@ public class UserServiceTest {
     UserDao userDao;
 
     @Autowired
-    DataSource dataSource;
+    PlatformTransactionManager transactionManager;
 
     List<User> users;
 
@@ -86,7 +87,7 @@ public class UserServiceTest {
     public void upgradeAllOrNothing() {
         UserService testUserService = new TestUserService(users.get(3).getId()); // 4번째 user에서 예외 발생
         testUserService.setUserDao(userDao); // 수동으로 DI를 진행
-        testUserService.setDataSource(dataSource); // 수동으로 DI 진행
+        testUserService.setTransactionManager(transactionManager); // 수동으로 DI 진행
 
         userDao.deleteAll();
         for (User user : users) {
