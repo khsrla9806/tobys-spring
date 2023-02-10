@@ -40,11 +40,11 @@ public class UserServiceTest {
     @Before
     public void setUp() {
         users = Arrays.asList(
-                new User("hoon", "훈", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER - 1, 0),
-                new User("you", "유", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER, 0),
-                new User("min", "민", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD - 1),
-                new User("young", "영", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD),
-                new User("sun", "선", "p1234", Level.GOLD, 100, Integer.MAX_VALUE)
+                new User("hoon", "훈", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER - 1, 0, "kimhunsope@kakao.com"),
+                new User("you", "유", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER, 0, "kimhunsope@kakao.com"),
+                new User("min", "민", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD - 1, "kimhunsope@kakao.com"),
+                new User("young", "영", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD, "kimhunsope@kakao.com"),
+                new User("sun", "선", "p1234", Level.GOLD, 100, Integer.MAX_VALUE, "kimhunsope@kakao.com")
         );
     }
 

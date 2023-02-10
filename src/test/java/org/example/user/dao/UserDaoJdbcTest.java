@@ -33,9 +33,9 @@ public class UserDaoJdbcTest {
 
     @Before
     public void setUp() {
-        user1 = new User("user1", "유저1", "1234", Level.BASIC, 1, 0);
-        user2 = new User("user2", "유저2", "1234", Level.SILVER, 55, 10);
-        user3 = new User("user3", "유저3", "1234", Level.GOLD, 100, 40);
+        user1 = new User("user1", "유저1", "1234", Level.BASIC, 1, 0, "kimhunsope@kakao.com");
+        user2 = new User("user2", "유저2", "1234", Level.SILVER, 55, 10, "kimhunsope@kakao.com");
+        user3 = new User("user3", "유저3", "1234", Level.GOLD, 100, 40, "kimhunsope@kakao.com");
     }
 
     @Test
