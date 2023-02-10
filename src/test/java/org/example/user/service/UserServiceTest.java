@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.example.user.service.UserService.MIN_LOGIN_COUNT_FOR_SILVER;
+import static org.example.user.service.UserService.MIN_RECOMMEND_COUNT_FOR_GOLD;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -32,11 +34,11 @@ public class UserServiceTest {
     @Before
     public void setUp() {
         users = Arrays.asList(
-                new User("hoon", "훈", "p1234", Level.BASIC, 49, 0),
-                new User("you", "유", "p1234", Level.BASIC, 50, 0),
-                new User("min", "민", "p1234", Level.SILVER, 60, 29),
-                new User("young", "영", "p1234", Level.SILVER, 60, 30),
-                new User("sun", "선", "p1234", Level.GOLD, 100, 100)
+                new User("hoon", "훈", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER - 1, 0),
+                new User("you", "유", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER, 0),
+                new User("min", "민", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD - 1),
+                new User("young", "영", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD),
+                new User("sun", "선", "p1234", Level.GOLD, 100, Integer.MAX_VALUE)
         );
     }
 
