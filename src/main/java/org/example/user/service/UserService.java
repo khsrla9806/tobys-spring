@@ -1,20 +1,15 @@
 package org.example.user.service;
 
+import com.mysql.cj.Session;
 import org.example.user.dao.UserDao;
 import org.example.user.domain.Level;
 import org.example.user.domain.User;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import javax.sql.DataSource;
-import javax.xml.crypto.Data;
-import java.sql.Connection;
 import java.util.List;
+import java.util.Properties;
 
 public class UserService {
     public static final int MIN_LOGIN_COUNT_FOR_SILVER = 50;
@@ -63,6 +58,11 @@ public class UserService {
     protected void upgradeLevel(User user) {
         user.upgradeLevel();
         userDao.update(user);
+        sendUpgradeEmail(user);
+    }
+
+    private void sendUpgradeEmail(User user) {
+
     }
 
     public void add(User user) {
