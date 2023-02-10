@@ -48,7 +48,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void upgradeLevels() throws Exception {
+    public void upgradeLevels() {
         userDao.deleteAll();
         for (User user : users) {
             userDao.add(user);
@@ -83,7 +83,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void upgradeAllOrNothing() throws Exception {
+    public void upgradeAllOrNothing() {
         UserService testUserService = new TestUserService(users.get(3).getId()); // 4번째 user에서 예외 발생
         testUserService.setUserDao(userDao); // 수동으로 DI를 진행
         testUserService.setDataSource(dataSource); // 수동으로 DI 진행
