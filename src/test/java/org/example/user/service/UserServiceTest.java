@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class UserServiceTest {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    DataSource dataSource;
+
     List<User> users;
 
     @Before
@@ -44,7 +48,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void upgradeLevels() {
+    public void upgradeLevels() throws Exception {
         userDao.deleteAll();
         for (User user : users) {
             userDao.add(user);
@@ -79,9 +83,10 @@ public class UserServiceTest {
     }
 
     @Test
-    public void upgradeAllOrNothing() {
+    public void upgradeAllOrNothing() throws Exception {
         UserService testUserService = new TestUserService(users.get(3).getId()); // 4번째 user에서 예외 발생
         testUserService.setUserDao(userDao); // 수동으로 DI를 진행
+        testUserService.setDataSource(dataSource); // 수동으로 DI 진행
 
         userDao.deleteAll();
         for (User user : users) {
