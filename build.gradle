@@ -35,8 +35,9 @@ dependencies {
 
     // 메일 발송 의존성
     compileOnly 'javax.activation:com.springsource.javax.activation:1.1.0'
-    implementation 'javax.mail:com.springsource.javax.mail:1.4.0'
+//    implementation 'javax.mail:com.springsource.javax.mail:1.4.0'
     implementation 'org.springframework:spring-context-support:3.0.7.RELEASE'
+    implementation 'com.sun.mail:javax.mail:1.6.1'
 
 }
 
