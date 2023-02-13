@@ -3,6 +3,7 @@ package org.example.user.service;
 import org.example.user.dao.UserDao;
 import org.example.user.domain.Level;
 import org.example.user.domain.User;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -25,6 +26,7 @@ public class UserService {
     public static final int MIN_RECOMMEND_COUNT_FOR_GOLD = 30;
     private UserDao userDao;
     private PlatformTransactionManager transactionManager;
+    private MailSender mailSender;
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
@@ -32,6 +34,10 @@ public class UserService {
 
     public void setTransactionManager(PlatformTransactionManager transactionManager) {
         this.transactionManager = transactionManager;
+    }
+
+    public void setMailSender(MailSender mailSender) {
+        this.mailSender = mailSender;
     }
 
     public void upgradeLevels() {
@@ -71,16 +77,13 @@ public class UserService {
     }
 
     private void sendUpgradeEmail(User user) {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl(); // 구현 클래스인 JavaMailSenderImpl
-        mailSender.setHost("mail.server.com");
-
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
         mailMessage.setFrom("useradmin@sug.org");
         mailMessage.setSubject("Upgrade 안내");
         mailMessage.setText("사용자님의 등급이 " + user.getLevel().name());
 
-        mailSender.send(mailMessage);
+        this.mailSender.send(mailMessage);
     }
 
     public void add(User user) {
