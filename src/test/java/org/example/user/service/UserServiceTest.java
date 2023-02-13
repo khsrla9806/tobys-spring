@@ -8,8 +8,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.mail.MailSender;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -35,16 +37,19 @@ public class UserServiceTest {
     @Autowired
     PlatformTransactionManager transactionManager;
 
+    @Autowired
+    MailSender mailSender;
+
     List<User> users;
 
     @Before
     public void setUp() {
         users = Arrays.asList(
-                new User("hoon", "훈", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER - 1, 0, "kimhunsope@kakao.com"),
-                new User("you", "유", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER, 0, "kimhunsope@kakao.com"),
-                new User("min", "민", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD - 1, "kimhunsope@kakao.com"),
-                new User("young", "영", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD, "kimhunsope@kakao.com"),
-                new User("sun", "선", "p1234", Level.GOLD, 100, Integer.MAX_VALUE, "kimhunsope@kakao.com")
+                new User("hoon", "훈", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER - 1, 0, "a@kakao.com"),
+                new User("you", "유", "p1234", Level.BASIC, MIN_LOGIN_COUNT_FOR_SILVER, 0, "b@kakao.com"),
+                new User("min", "민", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD - 1, "c@kakao.com"),
+                new User("young", "영", "p1234", Level.SILVER, 60, MIN_RECOMMEND_COUNT_FOR_GOLD, "d@kakao.com"),
+                new User("sun", "선", "p1234", Level.GOLD, 100, Integer.MAX_VALUE, "e@kakao.com")
         );
     }
 
@@ -88,6 +93,7 @@ public class UserServiceTest {
         UserService testUserService = new TestUserService(users.get(3).getId()); // 4번째 user에서 예외 발생
         testUserService.setUserDao(userDao); // 수동으로 DI를 진행
         testUserService.setTransactionManager(transactionManager); // 수동으로 DI 진행
+        testUserService.setMailSender(mailSender);
 
         userDao.deleteAll();
         for (User user : users) {
