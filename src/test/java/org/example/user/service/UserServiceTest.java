@@ -7,23 +7,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.example.user.service.UserService.MIN_LOGIN_COUNT_FOR_SILVER;
-import static org.example.user.service.UserService.MIN_RECOMMEND_COUNT_FOR_GOLD;
+import static org.example.user.service.UserServiceImpl.MIN_LOGIN_COUNT_FOR_SILVER;
+import static org.example.user.service.UserServiceImpl.MIN_RECOMMEND_COUNT_FOR_GOLD;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -34,6 +31,9 @@ import static org.junit.Assert.fail;
 public class UserServiceTest {
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserServiceImpl userServiceImpl;
 
     @Autowired
     UserDao userDao;
@@ -66,9 +66,9 @@ public class UserServiceTest {
         }
 
         MockMailSender mockMailSender = new MockMailSender();
-        userService.setMailSender(mockMailSender); // DI를 직접 해준다.
+        userServiceImpl.setMailSender(mockMailSender); // DI를 직접 해준다.
 
-        userService.upgradeLevels();
+        userServiceImpl.upgradeLevels();
 
         checkLevelUpgraded(users.get(0), false);
         checkLevelUpgraded(users.get(1), true);
@@ -104,10 +104,14 @@ public class UserServiceTest {
 
     @Test
     public void upgradeAllOrNothing() {
-        UserService testUserService = new TestUserService(users.get(3).getId()); // 4번째 user에서 예외 발생
+        TestUserService testUserService = new TestUserService(users.get(3).getId()); // 4번째 user에서 예외 발생
         testUserService.setUserDao(userDao); // 수동으로 DI를 진행
-        testUserService.setTransactionManager(transactionManager); // 수동으로 DI 진행
         testUserService.setMailSender(mailSender);
+
+        // 트랜잭션 처리 부분을 위한 수동 DI 설정
+        UserServiceTx userServiceTx = new UserServiceTx();
+        userServiceTx.setTransactionManager(transactionManager);
+        userServiceTx.setUserService(testUserService);
 
         userDao.deleteAll();
         for (User user : users) {
@@ -115,7 +119,7 @@ public class UserServiceTest {
         }
 
         try {
-            testUserService.upgradeLevels(); // 여기서 예외가 발생되야 한다.
+            userServiceTx.upgradeLevels(); // 여기서 예외가 발생되야 한다.
             fail("TestUserServiceException expected"); // 정상 종료 시에는 테스트 실패 메시지 출력
         } catch (TestUserServiceException e) {
 
@@ -134,7 +138,7 @@ public class UserServiceTest {
         }
     }
 
-    static class TestUserService extends UserService {
+    static class TestUserService extends UserServiceImpl {
         private String id;
 
         private TestUserService(String id) {

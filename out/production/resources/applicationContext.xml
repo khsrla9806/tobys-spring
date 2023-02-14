@@ -10,7 +10,7 @@
         <property name="password" value="" />
     </bean>
 
-    <bean id="userService" class="org.example.user.service.UserService">
+    <bean id="userService" class="org.example.user.service.UserServiceImpl">
         <property name="userDao" ref="userDao" />
     </bean>
 
