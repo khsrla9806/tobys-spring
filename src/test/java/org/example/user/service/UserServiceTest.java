@@ -59,30 +59,33 @@ public class UserServiceTest {
 
     @Test
     public void upgradeLevels() {
-        // DB 테스트를 위한 데이터를 준비
-        userDao.deleteAll();
-        for (User user : users) {
-            userDao.add(user);
-        }
+        UserServiceImpl userServiceImpl = new UserServiceImpl(); // 고립된 테스트에서는 직접 오브젝트를 생성
+
+        // MockUserDao를 직접 DI 해준다.
+        MockUserDao mockUserDao = new MockUserDao(this.users);
+        userServiceImpl.setUserDao(mockUserDao);
 
         // 메일 발송 여부 확인을 위해서 목 오브젝트를 DI
         MockMailSender mockMailSender = new MockMailSender();
         userServiceImpl.setMailSender(mockMailSender);
 
-        userService.upgradeLevels(); // 테스트 대상 실행
+        userServiceImpl.upgradeLevels(); // 테스트 대상 실행
 
-        // DB에 저장된 결과를 확인
-        checkLevelUpgraded(users.get(0), false);
-        checkLevelUpgraded(users.get(1), true);
-        checkLevelUpgraded(users.get(2), false);
-        checkLevelUpgraded(users.get(3), true);
-        checkLevelUpgraded(users.get(4), false);
+        List<User> updated = mockUserDao.getUpdated();
+        assertThat(updated.size(), is(2));
+        checkUserAndLevel(updated.get(0), "you", Level.SILVER);
+        checkUserAndLevel(updated.get(1), "young", Level.GOLD);
 
         // 목 오브젝트를 이용한 결과 확인
         List<String> request = mockMailSender.getRequests();
         assertThat(request.size(), is(2));
         assertThat(request.get(0), is(users.get(1).getEmail()));
         assertThat(request.get(1), is(users.get(3).getEmail()));
+    }
+
+    private void checkUserAndLevel(User updated, String expectedId, Level expectedLevel) {
+        assertThat(updated.getId(), is(expectedId));
+        assertThat(updated.getLevel(), is(expectedLevel));
     }
 
     @Test
