@@ -58,29 +58,31 @@ public class UserServiceTest {
     }
 
     @Test
-    @DirtiesContext // 컨텍스트의 DI 설정을 변경하는 테스트라는 것을 알림
     public void upgradeLevels() {
+        // DB 테스트를 위한 데이터를 준비
         userDao.deleteAll();
         for (User user : users) {
             userDao.add(user);
         }
 
+        // 메일 발송 여부 확인을 위해서 목 오브젝트를 DI
         MockMailSender mockMailSender = new MockMailSender();
-        userServiceImpl.setMailSender(mockMailSender); // DI를 직접 해준다.
+        userServiceImpl.setMailSender(mockMailSender);
 
-        userServiceImpl.upgradeLevels();
+        userService.upgradeLevels(); // 테스트 대상 실행
 
+        // DB에 저장된 결과를 확인
         checkLevelUpgraded(users.get(0), false);
         checkLevelUpgraded(users.get(1), true);
         checkLevelUpgraded(users.get(2), false);
         checkLevelUpgraded(users.get(3), true);
         checkLevelUpgraded(users.get(4), false);
 
+        // 목 오브젝트를 이용한 결과 확인
         List<String> request = mockMailSender.getRequests();
         assertThat(request.size(), is(2));
         assertThat(request.get(0), is(users.get(1).getEmail()));
         assertThat(request.get(1), is(users.get(3).getEmail()));
-        // 1, 3번 사용자만 true이기 때문에 1번, 3번 사용자의 메일이 순서대로 저장되어 있는지 확인
     }
 
     @Test
@@ -174,6 +176,50 @@ public class UserServiceTest {
         @Override
         public void send(SimpleMailMessage[] mailMessages) throws MailException {
 
+        }
+    }
+
+    static class MockUserDao implements UserDao {
+        private List<User> users; // 업그레이드 후보를 저장할 리스트
+        private List<User> updated = new ArrayList<>(); // 업그레이드 대상 오브젝트를 저장해둘 목록
+
+        private MockUserDao(List<User> users) {
+            this.users = users;
+        }
+
+        public List<User> getUpdated() {
+            return this.updated;
+        }
+
+        @Override
+        public List<User> getAll() {
+            return this.users; // 스텁 기능을 제공한다.
+        }
+
+        @Override
+        public void update(User user) {
+            updated.add(user); // 목 오브젝트 기능을 제공
+        }
+
+        // 테스트에 사용되지 않는 메서드들을 정리 (인터페이스 상속을 위해서 꼭 구현은 해놔야 함)
+        @Override
+        public void add(User user) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public User get(String id) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void deleteAll() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public int getCount() {
+            throw new UnsupportedOperationException();
         }
     }
 }
